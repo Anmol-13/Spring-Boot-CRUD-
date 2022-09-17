@@ -1,0 +1,57 @@
+package com.springboot.CustomSecurityWithDB.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.springboot.CustomSecurityWithDB.DAO.TopicDAO;
+import com.springboot.CustomSecurityWithDB.entities.Topic;
+import com.springboot.CustomSecurityWithDB.service.TopicService;
+
+@Service
+public class TopicServiceImpl implements TopicService {
+	
+	@Autowired
+	private TopicDAO topicDAO;
+
+	@Override
+	public List<Topic> getAllTopics() {
+		// TODO Auto-generated method stub
+		return topicDAO.findAll();
+	}
+
+	@Override
+	public Topic getTopicById(int topicId) {
+		Topic topic = topicDAO.findById(topicId).orElse(new Topic());
+		return topic;
+	}
+
+	@Override
+	public Topic addTopic(Topic topic) {
+		// TODO Auto-generated method stub
+		return topicDAO.save(topic);
+	}
+
+	@Override
+	public Topic updateTopic(Topic topic) {
+		Topic topicDbObj =getTopicById(topic.getTopicId());
+		
+		if(topic.getTitle() != null) {
+			topicDbObj.setTitle(topic.getTitle());
+		}
+		
+		if(topic.getCategory()!=null) {
+			topicDbObj.setCategory(topic.getCategory());
+			
+		}
+		return topicDAO.save(topicDbObj);
+	}
+
+	@Override
+	public void deleteTopic(int topicId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
